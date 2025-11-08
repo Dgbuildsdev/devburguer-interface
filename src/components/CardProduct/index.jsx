@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { CardImage, Container } from './styles';
+import { CardImage, Container, ProductDetails } from './styles';
 import { CartButton } from '../CartButton';
 import { useCart } from '../../hooks/CartContext';
 import { formatPrice } from '../../utils/formatPrice';
@@ -37,11 +37,11 @@ export function CardProduct({ product }) {
   return (
     <Container>
       <CardImage src={product.url} alt={product.name} />
-      <div>
+      <ProductDetails>
         <h5>{product.name}</h5>
         <p>{product.description}</p>
         <strong>{formatPrice(product.price)}</strong>
-      </div>
+      </ProductDetails>
       <CartButton onClick={handleAddToCart} />
     </Container>
   );

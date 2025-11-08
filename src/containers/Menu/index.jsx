@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
     Container,
     Banner,
@@ -20,14 +20,20 @@ export function Menu() {
     const [activeCategory, setActiveCategory] = useState(0);
 
     const navigate = useNavigate();
-    const { search } = useLocation();
+    const location = useLocation();
+    const [searchParams] = useSearchParams();
 
     // 🔹 Ler categoria do query string
     useEffect(() => {
-        const queryParams = new URLSearchParams(search);
-        const categoryId = +queryParams.get("categoria");
-        if (categoryId) setActiveCategory(categoryId);
-    }, [search]);
+        const categoryId = searchParams.get("categoria");
+        
+        if (categoryId) {
+            const numericCategoryId = Number(categoryId);
+            setActiveCategory(numericCategoryId);
+        } else {
+            setActiveCategory(0);
+        }
+    }, [searchParams]);
 
     // 🔹 Carregar categorias e produtos
     useEffect(() => {
@@ -54,12 +60,16 @@ export function Menu() {
 
     // 🔹 Filtrar produtos pela categoria
     useEffect(() => {
+        if (products.length === 0) return; // Não filtrar se não há produtos
+        
         if (activeCategory === 0) {
             setFilteredProducts(products);
         } else {
-            const newFilteredProducts = products.filter(
-                (product) => product.category_id === activeCategory
-            );
+            const newFilteredProducts = products.filter((product) => {
+                // Verifica diferentes possibilidades de estrutura
+                const categoryId = Number(product.category_id || product.category?.id || product.categoryId);
+                return categoryId === Number(activeCategory);
+            });
             setFilteredProducts(newFilteredProducts);
         }
     }, [activeCategory, products]);
@@ -86,13 +96,7 @@ export function Menu() {
               key={category.id}
               $isActiveCategory={activeCategory === category.id}
               onClick={() => {
-                navigate(
-                  {
-                    pathname: "/cardapio",
-                    search: `?categoria=${category.id}`,
-                  },
-                  { replace: true }
-                );
+                navigate(`/cardapio?categoria=${category.id}`);
                 setActiveCategory(category.id);
               }}
             >

@@ -9,7 +9,7 @@ export const Container = styled.div`
     border-radius: 8px;
     background-color: ${props => props.theme.standardTheme.white};
     box-shadow: rgba(0, 0, 0, 0.35) 0px 10px 10px;
-    cursor: grab;
+    cursor: pointer;
     position: relative;
         
 
@@ -55,10 +55,49 @@ export const Container = styled.div`
 `;
 
 export const CardImage = styled.img`
-    height: 120px;
+    height: 140px;
+    width: 140px;
     position: absolute;    
-    top: -40px;
+    top: -50px;
     padding-top: 10px;
     padding-bottom: 5px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    display: block;
     
+`;
+
+export const ProductDetails = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 35px;
+    width: 100%;
+
+    h5 {
+        font-size: 16px;
+        line-height: 20px;
+        color: #424242;
+        font-weight: 900;
+        margin: 0;
+        text-align: center;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 20px;
+        color: #9a9a9d;
+        margin: 0;
+        text-align: center;
+    }
+
+    strong {
+        font-size: 18px;
+        line-height: 20px;
+        color: #363636;
+        font-weight: 800;
+        margin-top: 8px;
+    }
 `;
